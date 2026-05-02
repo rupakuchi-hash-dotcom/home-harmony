@@ -1,13 +1,16 @@
 import { Link } from "react-router-dom";
 import { ArrowRight, Building2, Home as HomeIcon, KeyRound, Quote, Search, ShieldCheck, Sparkles, Star } from "lucide-react";
 import heroImg from "@/assets/hero.jpg";
+import p1 from "@/assets/property-1.jpg";
+import p3 from "@/assets/property-3.jpg";
+import p5 from "@/assets/property-5.jpg";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { properties } from "@/data/properties";
 import { PropertyCard } from "@/components/PropertyCard";
 import { AutoScrollGallery } from "@/components/AutoScrollGallery";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 const Home = () => {
@@ -16,6 +19,12 @@ const Home = () => {
   const [loc, setLoc] = useState("");
   const [type, setType] = useState("");
   const [budget, setBudget] = useState("");
+  const heroSlides = [heroImg, p1, p3, p5];
+  const [slide, setSlide] = useState(0);
+  useEffect(() => {
+    const t = setInterval(() => setSlide((s) => (s + 1) % heroSlides.length), 4500);
+    return () => clearInterval(t);
+  }, [heroSlides.length]);
 
   const onSearch = (e: React.FormEvent) => {
     e.preventDefault();
@@ -31,28 +40,32 @@ const Home = () => {
       {/* Hero */}
       <section className="relative min-h-[88vh] flex items-center">
         <div className="absolute inset-0 -z-10">
-          <img
-            src={heroImg}
-            alt="Luxury home at golden hour"
-            width={1920}
-            height={1080}
-            className="h-full w-full object-cover"
-          />
-          <div className="absolute inset-0 gradient-hero" />
+          {heroSlides.map((src, i) => (
+            <img
+              key={i}
+              src={src}
+              alt="Featured property"
+              width={1920}
+              height={1080}
+              className="absolute inset-0 h-full w-full object-cover transition-opacity duration-1000"
+              style={{ opacity: slide === i ? 1 : 0 }}
+            />
+          ))}
+          <div className="absolute inset-0 bg-background/70 backdrop-blur-[2px]" />
         </div>
 
-        <div className="container py-24 md:py-32 text-primary-foreground">
+        <div className="container py-24 md:py-32 text-foreground">
           <div className="max-w-3xl space-y-6 animate-fade-in">
-            <span className="inline-flex items-center gap-2 rounded-full bg-background/15 backdrop-blur px-4 py-1.5 text-sm border border-white/20">
+            <span className="inline-flex items-center gap-2 rounded-full bg-card/80 backdrop-blur px-4 py-1.5 text-sm border border-border text-foreground">
               <Sparkles className="h-3.5 w-3.5" /> India's most loved home-finding platform
             </span>
             <h1 className="font-display font-bold text-4xl sm:text-5xl md:text-6xl lg:text-7xl leading-[1.05]">
               Find a place your family
-              <span className="block text-transparent bg-clip-text bg-gradient-to-r from-white to-[hsl(var(--primary-glow))]">
+              <span className="block text-transparent bg-clip-text bg-gradient-to-r from-primary to-[hsl(var(--primary-glow))]">
                 will call home.
               </span>
             </h1>
-            <p className="text-lg text-white/85 max-w-xl">
+            <p className="text-lg text-foreground/80 max-w-xl">
               Curated apartments, villas and townhouses across Bangalore, Mumbai, Pune & Goa — handpicked for middle-class Indian families.
             </p>
           </div>
@@ -98,10 +111,22 @@ const Home = () => {
             </Button>
           </form>
 
-          <div className="mt-10 flex flex-wrap gap-6 text-sm text-white/85">
+          <div className="mt-10 flex flex-wrap gap-6 text-sm">
             <Stat value="12,000+" label="Verified Listings" />
             <Stat value="50+" label="Indian Cities" />
             <Stat value="98%" label="Happy Families" />
+          </div>
+
+          {/* Slide indicators */}
+          <div className="mt-8 flex gap-2">
+            {heroSlides.map((_, i) => (
+              <button
+                key={i}
+                aria-label={`Hero slide ${i + 1}`}
+                onClick={() => setSlide(i)}
+                className={`h-2 rounded-full transition-all ${slide === i ? "w-8 bg-primary" : "w-2 bg-foreground/30"}`}
+              />
+            ))}
           </div>
         </div>
       </section>
@@ -224,8 +249,8 @@ const Home = () => {
 
 const Stat = ({ value, label }: { value: string; label: string }) => (
   <div>
-    <div className="font-display font-bold text-2xl text-white">{value}</div>
-    <div className="text-white/70 text-xs">{label}</div>
+    <div className="font-display font-bold text-2xl text-foreground">{value}</div>
+    <div className="text-muted-foreground text-xs">{label}</div>
   </div>
 );
 
