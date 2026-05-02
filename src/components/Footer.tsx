@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { Facebook, Home, Instagram, Linkedin, Twitter } from "lucide-react";
+import staffarcLogo from "@/assets/staffarc-logo.png";
 
 export const Footer = () => {
   return (
@@ -59,9 +60,25 @@ export const Footer = () => {
         </div>
       </div>
       <div className="border-t border-border">
-        <div className="container py-6 text-xs text-muted-foreground flex flex-col sm:flex-row justify-between gap-2">
+        <div className="container py-6 text-xs text-muted-foreground flex flex-col sm:flex-row items-center justify-between gap-3">
           <span>© {new Date().getFullYear()} Estate. All rights reserved.</span>
-          <span>Made with care in India</span>
+          <a
+            href="https://staffarc.com"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 hover:text-primary transition-smooth group"
+            aria-label="Developed by Staffarc"
+          >
+            <span>Developed by</span>
+            <img
+              src={staffarcLogo}
+              alt="Staffarc"
+              width={96}
+              height={24}
+              loading="lazy"
+              className="h-6 w-auto object-contain group-hover:scale-105 transition-smooth"
+            />
+          </a>
         </div>
       </div>
     </footer>
