@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { properties } from "@/data/properties";
 import { PropertyCard } from "@/components/PropertyCard";
+import { AutoScrollGallery } from "@/components/AutoScrollGallery";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -144,6 +145,8 @@ const Home = () => {
           {featured.map((p) => <PropertyCard key={p.id} property={p} />)}
         </div>
       </section>
+
+      <AutoScrollGallery />
 
       {/* Why us */}
       <section className="bg-secondary/40 py-20 md:py-28">
